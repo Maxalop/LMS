@@ -1,0 +1,15 @@
+create database pms01;
+use pms01;
+
+
+
+
+CREATE TABLE PMS_MANAGER_DETAILS
+(Manager_ID INT NOT NULL ,
+Manager_Name VARCHAR(30) NOT NULL,
+Job VARCHAR(30) NOT NULL,
+Boss_Code INT(5),
+SALARY INT(7)NOT NULL,
+Commission INT,
+DEPARTMENT_ID INT(2)
+);
