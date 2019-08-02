@@ -1,0 +1,260 @@
+CREATE DATABASE CMS2;
+
+USE CMS2;
+
+
+CREATE TABLE Users(
+UsersIdPk INT NOT NULL AUTO_INCREMENT,
+Idtype VARCHAR (50),
+Fullname VARCHAR(255) NOT NULL,
+Username VARCHAR(50) NOT NULL,
+PasswordId VARCHAR(50) NOT NULL,
+PRIMARY KEY (UsersIdPk)
+);
+
+INSERT INTO Users (IdType, Fullname, Username, PasswordId)
+
+VALUES(
+'Customer',
+'Smit Jakhotia',
+'SJ007',
+'SJ007'
+);
+
+
+SELECT * FROM Users;
+
+
+CREATE TABLE Customer (
+CustomerIdPk INT NOT NULL AUTO_INCREMENT, 
+UsersIdPk INT,
+Fullname VARCHAR(255),
+EmailId VARCHAR(50),
+MobileNo INT ,
+Address VARCHAR(255),
+CreateDate varchar (50),
+ModifiedDate varchar (50),
+OrderStatus Varchar (50),
+primary key(CustomerIdPk),
+FOREIGN KEY (UsersIdPk) REFERENCES Users(UsersIdPk)
+);
+
+INSERT INTO Customer
+(Fullname, EmailId, MobileNo, Address, CreateDate, ModifiedDate)
+
+VALUES
+(
+'Smit Jakhotia',
+'smitjakhotia@gmail.com',
+'123456789',
+'Pune',
+'30-Jul-19',
+'30-Jul-19'
+);
+
+
+
+
+SELECT * FROM Customer;
+
+
+CREATE TABLE Vendor(
+VendorIdPk INT NOT NULL AUTO_INCREMENT,
+UsersIdPk INT,
+Fullname VARCHAR(255) NOT NULL,
+EmailId VARCHAR(50),
+MobileNo INT ,
+OrderStatus Varchar(50),
+Reason varchar(50),
+PRIMARY KEY(VendorIdPk),
+FOREIGN KEY (UsersIdPk)  REFERENCES Users(UsersIdPk)
+);
+
+
+INSERT INTO Vendor
+(Fullname, EmailId, MobileNo, OrderStatus)
+
+VALUES
+(
+'Ketan Soni',
+'ketansoni@gmail.com',
+'123456789',
+'Accepted'
+);
+
+
+SELECT * FROM Vendor;
+
+
+CREATE TABLE Employee (
+EmpIdPk INT NOT NULL AUTO_INCREMENT,
+UsersIdPk INT,
+Fullname VARCHAR(255),
+MobileNo INT,
+EmailId VARCHAR (255),
+Vehicle VARCHAR(50),
+VehicleNo VARCHAR(50),
+Shift VARCHAR(50),
+ShiftTimings VARCHAR(50),
+OrderStatus Varchar (50),
+CustomerIdPk INT,
+PRIMARY KEY (EmpIdPk),
+FOREIGN KEY (UsersIdPk) REFERENCES Users(UsersIdPk),
+FOREIGN KEY (CustomerIdPk) REFERENCES Customer(CustomerIdPk)
+);
+
+
+
+INSERT INTO Employee
+(Fullname, MobileNo, EmailId, Vehicle, VehicleNo, Shift, ShiftTimings, OrderStatus)
+
+VALUES
+(
+'Sanchit Ramteke',
+'123456789',
+'sanchitramteke@gmail.com',
+'Splendor',
+'MH04 BX1234',
+'Day Shift',
+'9:00-5:00',
+'On Delivery'
+);
+
+
+SELECT * FROM Employee;
+
+
+CREATE TABLE Menu(
+FoodIdPk INT NOT NULL AUTO_INCREMENT,
+IdType VARCHAR (50),
+ItemType VARCHAR(255) NOT NULL,
+ItemName VARCHAR(50) NOT NULL,
+Amount INT NOT NULL,
+PRIMARY KEY (FoodIdPk)
+);
+
+INSERT INTO Menu
+(IdType, ItemType, ItemName, Amount)
+
+VALUES
+(
+'North Indian',
+'VEG',
+'Paneer Butter Masala',
+'150'
+);
+
+
+SELECT * FROM Menu;
+
+
+CREATE TABLE Billing(
+BillingIdPk INT NOT NULL AUTO_INCREMENT,
+CustomerIdPk INT,
+VendorIdPk INT,
+FoodIdPk INT,
+PaymentMode VARCHAR (50),
+TotalAmount DOUBLE,
+BillDateTime VARCHAR(50),
+TransactionCode VARCHAR(50),
+OrderStatus VARCHAR (50),
+PRIMARY KEY (BillingIdPk),
+FOREIGN KEY (CustomerIdPk) REFERENCES Customer(CustomerIdPk),
+FOREIGN KEY (VendorIdPk) REFERENCES Vendor(VendorIdPk),
+FOREIGN KEY (FoodIdPk) REFERENCES Menu(FoodIdPk)
+ );
+ 
+ 
+ ALTER TABLE Billing
+ MODIFY BillDateTime TIMESTAMP NOT NULL;
+ 
+ 
+INSERT INTO Billing
+(PaymentMode, TotalAmount, BillDateTime, TransactionCode, OrderStatus)
+
+VALUES
+(
+'CASH',
+'150',
+current_timestamp,
+'001',
+'Paid'
+);
+ 
+ 
+ SELECT * FROM Billing;
+ 
+ CREATE TABLE OrderHistory(
+OrderIdPk INT NOT NULL AUTO_INCREMENT,
+CustomerIdPk INT,
+VendorIdPk INT,
+BillingIdPk INT,
+FoodIdPk INT,
+Quantity VARCHAR(50),
+TotalAmount INT,
+PaymentMode VARCHAR(50),
+OrderDateTime INT,
+PRIMARY KEY (ORDERIDPk),
+FOREIGN KEY (CustomerIdPk) REFERENCES Customer(CustomerIdPk),
+FOREIGN KEY (VendorIdPk) REFERENCES Vendor(VendorIdPk),
+FOREIGN KEY (BillingIdPk) REFERENCES Billing(BillingIdPk),
+FOREIGN KEY (FoodIdPk) REFERENCES Menu(FoodIdPk)
+);
+
+ALTER TABLE OrderHistory
+MODIFY OrderDateTime TIMESTAMP NOT NULL;
+
+
+INSERT INTO OrderHistory (CustomerIdPk, VendorIdPk, BillingIdPk, FoodIdPk, 
+
+Quantity, TotalAmount, PaymentMode, OrderDateTime)  
+ 
+ 
+ VALUES (
+ '1',
+ '1',
+ '1',
+ '1',
+ '1',
+ '150',
+ 'CASH',
+ current_timestamp() 
+ );
+ 
+ 
+ 
+  SELECT * FROM OrderHistory;
+ 
+ 
+ CREATE TABLE WalletDetails(
+WalletIdPk INT NOT NULL AUTO_INCREMENT,
+UsersIdPk INT,
+Balance INT,
+CreateDate VARCHAR(50),
+ModifiedDate VARCHAR(50),
+PRIMARY KEY (WalletIdPk),
+FOREIGN KEY (UsersIdPk) REFERENCES Users(UsersIdPk)
+);
+
+
+ALTER TABLE WalletDetails
+MODIFY ModifiedDate date;
+
+ALTER TABLE WalletDetails
+MODIFY CreateDate VARCHAR(50);
+
+
+INSERT INTO WalletDetails (UsersIdPk, Balance, CreateDate, ModifiedDate)
+
+VALUES (
+'1',
+'200',
+'30-Jul-19',
+current_date()
+);
+
+ SELECT * FROM WalletDetails;
+
+ 
+ 
+ 
